@@ -11,7 +11,7 @@ class WebSocketManager {
   initialize(server) {
     this.io = new Server(server, {
       cors: {
-        origin: env('FRONTEND_URL', 'http://localhost:3000'),
+        origin: env('FRONTEND_URL', 'https://smarthouse-backend.onrender.com'),
         methods: ['GET', 'POST'],
       },
     });

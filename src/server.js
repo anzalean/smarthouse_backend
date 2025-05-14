@@ -22,7 +22,7 @@ export const setupServer = async () => {
       origin:
         env('NODE_ENV') === 'production'
           ? [env('CLIENT_URL')]
-          : ['http://localhost:5173', 'http://localhost:3000'],
+          : ['https://smarthouse-frontend.vercel.app/', 'https://smarthouse-backend.onrender.com'],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
