@@ -1,0 +1,25 @@
+description: Bad Request Error
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 400
+          description: The HTTP status code for a bad request.
+        message:
+          type: string
+          example: Bad Request Error
+          description: A brief description of the error.
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: The request could not be understood by the server due to malformed syntax
+              description: Detailed information about the error, specifying that the request was not understood due to incorrect syntax.

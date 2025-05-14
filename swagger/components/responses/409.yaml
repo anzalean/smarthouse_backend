@@ -1,0 +1,25 @@
+description: Email in use
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 409
+          description: The HTTP status code indicating a conflict, such as when the provided email is already in use.
+        message:
+          type: string
+          example: Email already exist
+          description: A brief description of the error.
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Email already exist
+              description: Detailed information about the error, specifying that the email provided is already in use.

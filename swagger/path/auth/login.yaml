@@ -1,0 +1,98 @@
+tags:
+  - Auth
+summary: User login
+operationId: loginUser
+description: Authenticate a user and issue a new access token. This endpoint verifies the user's credentials and returns a token used for subsequent authenticated requests.
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            description: The email address of the user logging in.
+            type: string
+            format: email
+            example: peter12@example.com
+          password:
+            description: The password of the user logging in.
+            type: string
+            minLength: 8
+            maxLength: 50
+            example: password123
+responses:
+  '200':
+    description: Successfully authenticated the user and issued a new access token.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: User successfully authenticated
+            data:
+              type: object
+              required:
+                - user
+                - accessToken
+              properties:
+                user:
+                  type: object
+                  properties:
+                    userId:
+                      description: The unique identifier of the authenticated user.
+                      type: string
+                      example: 678427d895056fd9ae40e7c0
+                    email:
+                      description: The email address of the authenticated user.
+                      type: string
+                      example: peter12@example.com
+                    name:
+                      description: The name of the authenticated user.
+                      type: string
+                      example: Peter Pavlov
+                    gender:
+                      description: The gender of the authenticated user.
+                      type: string
+                      example: male
+                    avatarURL:
+                      description: The URL to the user's avatar.
+                      type: string
+                      example: https://example.com/avatar.jpg
+                    desiredVolume:
+                      description: The desired water volume of the user.
+                      type: number
+                      example: 1.5
+                    weight:
+                      description: The weight of the user.
+                      type: number
+                      example: 60
+                    activityTime:
+                      description: The active time of the user.
+                      type: number
+                      example: 2
+                accessToken:
+                  description: The access token that must be used for authenticated requests. Obtain this token by logging in using the `/auth/login` endpoint.
+                  type: string
+                  example: NOfB2S2e0OVHjvJb41gxPf4Rc6gwZmblEgiC4axh
+  '400':
+    $ref: ../../components/responses/400.yaml
+  '401':
+    $ref: ../../components/responses/401.yaml
+  '404':
+    $ref: ../../components/responses/404.yaml
+  '500':
+    $ref: ../../components/responses/500.yaml

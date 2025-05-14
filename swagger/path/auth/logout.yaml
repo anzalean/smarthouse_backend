@@ -1,0 +1,23 @@
+tags:
+  - Auth
+summary: User logout
+operationId: logoutUser
+description: Log out the authenticated user. This endpoint invalidates the current access token and terminates the user's session. The user must provide a valid access token in the `Authorization` header to successfully log out.
+security: []
+responses:
+  '204':
+    description: Successfully logged out the user and terminated the session.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: integer
+              example: 204
+  '400':
+    $ref: ../../components/responses/400.yaml
+  '500':
+    $ref: ../../components/responses/500.yaml

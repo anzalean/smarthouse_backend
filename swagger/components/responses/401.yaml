@@ -1,0 +1,25 @@
+description: Unauthorized error
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 401
+          description: The HTTP status code for an unauthorized request.
+        message:
+          type: string
+          example: Unauthorized error
+          description: A brief description of the error.
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Access token not provided
+              description: Detailed information about the error, specifying that the access token was not provided.

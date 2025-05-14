@@ -1,0 +1,27 @@
+type: object
+required:
+  - date
+  - amount
+  - owner
+  - id
+properties:
+  date:
+    description: The date and time when the water card is created. Must be in ISO 8601 format.
+    type: string
+    format: date-time
+    pattern: ^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}Z$
+    example: '2025-01-05T17:14:00Z'
+  amount:
+    description: The amount of water consumed, in milliliters.
+    type: number
+    minimum: 0
+    maximum: 5000
+    example: 50
+  # owner:
+  #   description: The unique identifier of the user who owns this water card.
+  #   type: string
+  #   example: 677abe02f27bdbf2cc19d845
+  # id:
+  #   description: The unique identifier of the water card.
+  #   type: string
+  #   example: 6776a2cecf4ab2a20b383055

@@ -1,0 +1,1354 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Water Tracker",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "description": "This is a documentation of water tracker"
+  },
+  "servers": [
+    {
+      "url": "https://water-tracker-backend-guwj.onrender.com",
+      "description": "Production server"
+    },
+    {
+      "url": "http://127.0.0.1:3000",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Water",
+      "description": "Water usage data operations."
+    },
+    {
+      "name": "Auth",
+      "description": "Authentication and password reset operations."
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User registration",
+        "operationId": "registerUser",
+        "description": "Register a new user. This endpoint creates a new user account with the provided email and password.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "The email address of the user to register.",
+                    "type": "string",
+                    "format": "email",
+                    "example": "peter12@example.com"
+                  },
+                  "password": {
+                    "description": "The password for the new user account. Must be between 8 and 50 characters.",
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 50,
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully registered a new user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully registered a user"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "userId",
+                        "email"
+                      ],
+                      "properties": {
+                        "userId": {
+                          "description": "The unique identifier of the registered user.",
+                          "type": "string",
+                          "example": "678427d895056fd9ae40e7c0"
+                        },
+                        "email": {
+                          "description": "The email address of the registered user.",
+                          "type": "string",
+                          "example": "peter12@example.com"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "409": {
+            "$ref": "#/components/responses/409"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User login",
+        "operationId": "loginUser",
+        "description": "Authenticate a user and issue a new access token. This endpoint verifies the user's credentials and returns a token used for subsequent authenticated requests.",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "The email address of the user logging in.",
+                    "type": "string",
+                    "format": "email",
+                    "example": "peter12@example.com"
+                  },
+                  "password": {
+                    "description": "The password of the user logging in.",
+                    "type": "string",
+                    "minLength": 8,
+                    "maxLength": 50,
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully authenticated the user and issued a new access token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User successfully authenticated"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "user",
+                        "accessToken"
+                      ],
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "userId": {
+                              "description": "The unique identifier of the authenticated user.",
+                              "type": "string",
+                              "example": "678427d895056fd9ae40e7c0"
+                            },
+                            "email": {
+                              "description": "The email address of the authenticated user.",
+                              "type": "string",
+                              "example": "peter12@example.com"
+                            },
+                            "name": {
+                              "description": "The name of the authenticated user.",
+                              "type": "string",
+                              "example": "Peter Pavlov"
+                            },
+                            "gender": {
+                              "description": "The gender of the authenticated user.",
+                              "type": "string",
+                              "example": "male"
+                            },
+                            "avatarURL": {
+                              "description": "The URL to the user's avatar.",
+                              "type": "string",
+                              "example": "https://example.com/avatar.jpg"
+                            },
+                            "desiredVolume": {
+                              "description": "The desired water volume of the user.",
+                              "type": "number",
+                              "example": 1.5
+                            },
+                            "weight": {
+                              "description": "The weight of the user.",
+                              "type": "number",
+                              "example": 60
+                            },
+                            "activityTime": {
+                              "description": "The active time of the user.",
+                              "type": "number",
+                              "example": 2
+                            }
+                          }
+                        },
+                        "accessToken": {
+                          "description": "The access token that must be used for authenticated requests. Obtain this token by logging in using the `/auth/login` endpoint.",
+                          "type": "string",
+                          "example": "NOfB2S2e0OVHjvJb41gxPf4Rc6gwZmblEgiC4axh"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User logout",
+        "operationId": "logoutUser",
+        "description": "Log out the authenticated user. This endpoint invalidates the current access token and terminates the user's session. The user must provide a valid access token in the `Authorization` header to successfully log out.",
+        "security": [],
+        "responses": {
+          "204": {
+            "description": "Successfully logged out the user and terminated the session.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 204
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/update-user": {
+      "patch": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Update user",
+        "operationId": "updateUser",
+        "description": "Update and add user data. This endpoint allows the authenticated user to update their profile information such as email, avatar, name, gender, weight, activity time, and desired water volume. The user must provide a valid access token in the `Authorization` header.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "email": {
+                    "description": "The email address of the user.",
+                    "type": "string",
+                    "format": "email",
+                    "example": "peter12@example.com"
+                  },
+                  "avatarURL": {
+                    "description": "The link to the user's photo. This can be a binary file.",
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "name": {
+                    "description": "The name of the user. Must be between 3 and 20 characters.",
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 20,
+                    "example": "Peter Pavlov"
+                  },
+                  "gender": {
+                    "description": "The gender of the user.",
+                    "type": "string",
+                    "enum": [
+                      "female",
+                      "male"
+                    ]
+                  },
+                  "weight": {
+                    "description": "The weight of the user.",
+                    "type": "number",
+                    "minimum": 0,
+                    "example": 60
+                  },
+                  "activityTime": {
+                    "description": "The active time of the user, in hours per day.",
+                    "type": "number",
+                    "minimum": 0,
+                    "example": 2
+                  },
+                  "desiredVolume": {
+                    "description": "The new desired daily water intake of the user in liters. Must be between 0.05 and 5 liters.",
+                    "type": "number",
+                    "minimum": 0.05,
+                    "maximum": 5,
+                    "example": 2.5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User updated successfully"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "user"
+                      ],
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "$ref": "#/components/schemas/user"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/google-login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login via Google OAuth",
+        "operationId": "googleLogin",
+        "description": "Authenticate a user using Google OAuth. This endpoint verifies the token received from Google and logs the user in, issuing a new access token for subsequent authenticated requests.",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "description": "The authorization code received from Google after user login.",
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzgyY2I4ODQ4MDlhNjFhYjk2YzQyOGYiLCJlbWFpbCI6ImdvY2hha2luZHJAdWtyLm5ldCIsImlhdCI6MTczNjY0MzQyMiwiZXhwIjoxNzM2NjQzNzIyfQ.1qKbcPj7mv6vNp0DzO_qSzRBFD1Boa5nBIKkopjAQMc"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged in via Google OAuth and issued a new access token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully logged in via Google OAuth!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "accessToken",
+                        "user"
+                      ],
+                      "properties": {
+                        "accessToken": {
+                          "description": "The access token for the authenticated user.",
+                          "type": "string",
+                          "example": "NOfB2S2e0OVHjvJb41gxPf4Rc6gwZmblEgiC4axh"
+                        },
+                        "user": {
+                          "type": "object",
+                          "$ref": "#/components/schemas/user"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/send-reset-email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Send reset email",
+        "operationId": "resetEmail",
+        "description": "Send an email to reset the password. This endpoint generates a token and sends an email to the user with a link to reset their password.",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "User's email address for sending the reset password link.",
+                    "type": "string",
+                    "example": "peter12@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully sent reset password email.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Reset password email was successfully sent!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/reset-pwd": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset password",
+        "operationId": "resetPassword",
+        "description": "Reset the user's password. This endpoint allows a user to reset their password using a provided token. The user must provide a valid token and a new password. Upon successful reset, the user's password is updated. **The token used to authorize the password reset is typically received via email after requesting a password reset. Use the `/auth/send-reset-email` endpoint to request the token.",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token",
+                  "password"
+                ],
+                "properties": {
+                  "token": {
+                    "description": "The token used to authorize the password reset. This token is typically received via email.",
+                    "type": "string",
+                    "example": "NOfB2S2e0OVHjvJb41gxPf4Rc6gwZmblEgiC4axh"
+                  },
+                  "password": {
+                    "description": "The new password for the user. Must be between 8 and 50 characters.",
+                    "minLength": 8,
+                    "maxLength": 50,
+                    "type": "string",
+                    "example": "Asdf1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully reset the user's password.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password was successfully reset!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/water": {
+      "post": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Create a water card",
+        "operationId": "waterCard",
+        "description": "Create a new water card entry. This endpoint allows the authenticated user to create a record of their water intake for a specific date and amount. The user must provide a valid access token in the `Authorization` header.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "amount"
+                ],
+                "properties": {
+                  "date": {
+                    "description": "The date and time when the water card is created. Must be in ISO 8601 format.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-01-05T17:20:38.936Z"
+                  },
+                  "amount": {
+                    "description": "The amount of water consumed, in milliliters.",
+                    "type": "number",
+                    "minimum": 50,
+                    "maximum": 5000,
+                    "example": 50
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created a water card entry.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created a water card"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/water"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/water/{cardId}": {
+      "patch": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Editing a water card",
+        "operationId": "editCard",
+        "description": "Edit an existing water card. This endpoint allows the authenticated user to update the details of a specific water card by providing the card's unique identifier and new data. The user must provide a valid access token in the `Authorization` header.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cardId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65ca67e7ae7f10c88b598384"
+            },
+            "description": "The unique identifier of the water card to be edited."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "date",
+                  "amount"
+                ],
+                "properties": {
+                  "date": {
+                    "description": "The date and time when the water card is edited. Must be in ISO 8601 format.",
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-01-05T17:20:38.936Z"
+                  },
+                  "amount": {
+                    "description": "The amount of water consumed, in milliliters.",
+                    "type": "number",
+                    "minimum": 50,
+                    "maximum": 5000,
+                    "example": 50
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully edited the water card.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully patched a water card!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/water"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Removing a card",
+        "operationId": "deleteCard",
+        "description": "Remove an existing water card. This endpoint allows the authenticated user to delete a specific water card by providing the card's unique identifier. The user must provide a valid access token in the `Authorization` header.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cardId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65ca67e7ae7f10c88b598384"
+            },
+            "description": "The unique identifier of the water card to be deleted."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully removed the water card.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 204
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/water/day": {
+      "get": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Day cards",
+        "operationId": "dayCard",
+        "description": "Retrieve the total water cards for the day. This endpoint allows the authenticated user to get a summary of their water intake for a specific day. The user must provide a valid access token in the `Authorization` header and a date in the query parameters to specify the day.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-01-12T00:00:00Z"
+            },
+            "description": "The date to specify the day for which the water cards are being retrieved. Must be in ISO 8601 format."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the total water cards for the day.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Total day water cards"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "date",
+                        "totalDayWater",
+                        "consumedWaterData",
+                        "owner"
+                      ],
+                      "properties": {
+                        "date": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2025-01-12T00:00:00Z"
+                        },
+                        "totalDayWater": {
+                          "description": "The total amount of water consumed over the day, in milliliters.",
+                          "type": "number",
+                          "example": 5000
+                        },
+                        "consumedWaterData": {
+                          "description": "The list of water cards for the day.",
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/water"
+                          }
+                        },
+                        "owner": {
+                          "description": "The unique identifier of the user who owns the water cards.",
+                          "type": "string",
+                          "example": "60d21b4667d0d8992e610c85"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/water/month": {
+      "get": {
+        "tags": [
+          "Water"
+        ],
+        "summary": "Month cards",
+        "operationId": "monthCard",
+        "description": "Retrieve the total water cards for the month. This endpoint allows the authenticated user to get a summary of their water intake for a specific month. The user must provide a valid access token in the `Authorization` header and a date in the query parameters to specify the month.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-01-01T00:00:00Z"
+            },
+            "description": "The date to specify the month for which the water cards are being retrieved. Must be in ISO 8601 format."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the total water cards for the month.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Total month water cards"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "date",
+                          "totalDayWater"
+                        ],
+                        "properties": {
+                          "date": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-01-01T00:00:00Z"
+                          },
+                          "totalDayWater": {
+                            "description": "The total amount of water consumed on that day, in milliliters.",
+                            "type": "number",
+                            "example": 5000
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Bad Request Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400,
+                  "description": "The HTTP status code for a bad request."
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bad Request Error",
+                  "description": "A brief description of the error."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "The request could not be understood by the server due to malformed syntax",
+                      "description": "Detailed information about the error, specifying that the request was not understood due to incorrect syntax."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401,
+                  "description": "The HTTP status code for an unauthorized request."
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized error",
+                  "description": "A brief description of the error."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Access token not provided",
+                      "description": "Detailed information about the error, specifying that the access token was not provided."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404,
+                  "description": "The HTTP status code indicating that the requested resource was not found."
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Not Found Error",
+                  "description": "A brief description of the error."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "The specified resource was not found!",
+                      "description": "Detailed information about the error, specifying that the resource requested could not be found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "409": {
+        "description": "Email in use",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 409,
+                  "description": "The HTTP status code indicating a conflict, such as when the provided email is already in use."
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Email already exist",
+                  "description": "A brief description of the error."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Email already exist",
+                      "description": "Detailed information about the error, specifying that the email provided is already in use."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 500,
+                  "description": "The HTTP status code indicating that the server encountered an unexpected condition that prevented it from fulfilling the request."
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error",
+                  "description": "A brief description of the error."
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error",
+                      "description": "Detailed information about the error, specifying that the server encountered an unexpected condition."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "user": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "email",
+          "avatarURL",
+          "gender",
+          "weight",
+          "activityTime",
+          "desiredVolume",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "_id": {
+            "description": "The unique identifier of the user.",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
+          },
+          "name": {
+            "description": "The name of the user.",
+            "type": "string",
+            "example": "Peter Pavlov"
+          },
+          "email": {
+            "description": "The email address of the user.",
+            "type": "string",
+            "example": "peter12@example.com"
+          },
+          "avatarURL": {
+            "description": "The URL link to the user's avatar photo. This can be a binary file.",
+            "type": "string",
+            "format": "binary"
+          },
+          "gender": {
+            "description": "The gender of the user.",
+            "type": "string",
+            "enum": [
+              "female",
+              "male"
+            ]
+          },
+          "weight": {
+            "description": "The weight of the user in kilograms.",
+            "type": "number",
+            "example": 60
+          },
+          "activityTime": {
+            "description": "The daily activity time of the user in hours.",
+            "type": "number",
+            "example": 2
+          },
+          "desiredVolume": {
+            "description": "The desired daily water intake volume of the user in liters. Must be between 0.05l and 5l.",
+            "type": "number",
+            "example": 1.5,
+            "minimum": 0.05,
+            "maximum": 5
+          },
+          "createdAt": {
+            "description": "The date and time when the user was created. Must be in ISO 8601 format.",
+            "type": "string",
+            "example": "2025-01-11T19:54:04.483Z"
+          },
+          "updatedAt": {
+            "description": "The date and time when the user was last updated. Must be in ISO 8601 format.",
+            "type": "string",
+            "example": "2025-01-11T19:54:04.483Z"
+          }
+        }
+      },
+      "water": {
+        "type": "object",
+        "required": [
+          "date",
+          "amount",
+          "owner",
+          "id"
+        ],
+        "properties": {
+          "date": {
+            "description": "The date and time when the water card is created. Must be in ISO 8601 format.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}Z$",
+            "example": "2025-01-05T17:14:00Z"
+          },
+          "amount": {
+            "description": "The amount of water consumed, in milliliters.",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5000,
+            "example": 50
+          }
+        }
+      }
+    }
+  }
+}

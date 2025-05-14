@@ -1,0 +1,55 @@
+tags:
+  - Auth
+summary: Google OAuth Callback
+operationId: googleCallback
+description: Handles the callback from Google OAuth and authenticates the user.
+security: []
+parameters:
+  - in: query
+    name: code
+    schema:
+      type: string
+    required: true
+    description: Authorization code received from Google
+responses:
+  '200':
+    description: Successfully authenticated with Google
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - message
+            - redirectUrl
+            - user
+          properties:
+            message:
+              type: string
+              example: Google authentication successful
+            redirectUrl:
+              type: string
+              example: http://localhost:5173/main
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: 64a57b0f1d108e4d4a67c2a9
+                email:
+                  type: string
+                  example: user@example.com
+                firstName:
+                  type: string
+                  example: John
+                lastName:
+                  type: string
+                  example: Doe
+                phoneNumber:
+                  type: string
+                  example: '+12345678900'
+  '400':
+    $ref: '../../components/responses/400.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

@@ -1,0 +1,25 @@
+description: Internal server error
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 500
+          description: The HTTP status code indicating that the server encountered an unexpected condition that prevented it from fulfilling the request.
+        message:
+          type: string
+          example: Internal server error
+          description: A brief description of the error.
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Internal server error
+              description: Detailed information about the error, specifying that the server encountered an unexpected condition.

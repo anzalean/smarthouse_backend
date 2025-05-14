@@ -1,0 +1,65 @@
+tags:
+  - Auth
+summary: User registration
+operationId: registerUser
+description: Register a new user. This endpoint creates a new user account with the provided email and password.
+security: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            description: The email address of the user to register.
+            type: string
+            format: email
+            example: peter12@example.com
+          password:
+            description: The password for the new user account. Must be between 8 and 50 characters.
+            type: string
+            minLength: 8
+            maxLength: 50
+            example: 'password123'
+responses:
+  '201':
+    description: Successfully registered a new user.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully registered a user
+            data:
+              type: object
+              required:
+                - userId
+                - email
+              properties:
+                userId:
+                  description: The unique identifier of the registered user.
+                  type: string
+                  example: 678427d895056fd9ae40e7c0
+                email:
+                  description: The email address of the registered user.
+                  type: string
+                  example: peter12@example.com
+  '400':
+    $ref: ../../components/responses/400.yaml
+  '409':
+    $ref: ../../components/responses/409.yaml
+  '500':
+    $ref: ../../components/responses/500.yaml

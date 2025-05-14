@@ -1,0 +1,25 @@
+description: Not Found Error
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+        - data
+      properties:
+        status:
+          type: integer
+          example: 404
+          description: The HTTP status code indicating that the requested resource was not found.
+        message:
+          type: string
+          example: Not Found Error
+          description: A brief description of the error.
+        data:
+          type: object
+          properties:
+            message:
+              type: string
+              example: The specified resource was not found!
+              description: Detailed information about the error, specifying that the resource requested could not be found.

@@ -1,0 +1,54 @@
+tags:
+  - Water
+summary: Create a water card
+operationId: waterCard
+description: Create a new water card entry. This endpoint allows the authenticated user to create a record of their water intake for a specific date and amount. The user must provide a valid access token in the `Authorization` header.
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - date
+          - amount
+        properties:
+          date:
+            description: The date and time when the water card is created. Must be in ISO 8601 format.
+            type: string
+            format: date-time
+            example: '2025-01-05T17:20:38.936Z'
+          amount:
+            description: The amount of water consumed, in milliliters.
+            type: number
+            minimum: 50
+            maximum: 5000
+            example: 50
+responses:
+  '201':
+    description: Successfully created a water card entry.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a water card
+            data:
+              type: object
+              $ref: ../../components/schemas/water.yaml
+  '400':
+    $ref: ../../components/responses/400.yaml
+  '401':
+    $ref: ../../components/responses/401.yaml
+  '500':
+    $ref: ../../components/responses/500.yaml

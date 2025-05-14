@@ -1,0 +1,79 @@
+tags:
+  - Auth
+summary: Update user
+operationId: updateUser
+description: Update and add user data. This endpoint allows the authenticated user to update their profile information such as email, avatar, name, gender, weight, activity time, and desired water volume. The user must provide a valid access token in the `Authorization` header.
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required: []
+        properties:
+          email:
+            description: The email address of the user.
+            type: string
+            format: email
+            example: peter12@example.com
+          avatarURL:
+            description: The link to the user's photo. This can be a binary file.
+            type: string
+            format: binary
+          name:
+            description: The name of the user. Must be between 3 and 20 characters.
+            type: string
+            minLength: 3
+            maxLength: 20
+            example: Peter Pavlov
+          gender:
+            description: The gender of the user.
+            type: string
+            enum: ['female', 'male']
+          weight:
+            description: The weight of the user.
+            type: number
+            minimum: 0
+            example: 60
+          activityTime:
+            description: The active time of the user, in hours per day.
+            type: number
+            minimum: 0
+            example: 2
+          desiredVolume:
+            description: The new desired daily water intake of the user in liters. Must be between 0.05 and 5 liters.
+            type: number
+            minimum: 0.05
+            maximum: 5
+            example: 2.5
+responses:
+  '200':
+    description: Successfully updated the user.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: User updated successfully
+            data:
+              type: object
+              required:
+                - user
+              properties:
+                user:
+                  type: object
+                  $ref: ../../components/schemas/user.yaml
+  '404':
+    $ref: ../../components/responses/404.yaml
+  '500':
+    $ref: ../../components/responses/500.yaml

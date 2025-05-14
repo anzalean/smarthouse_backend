@@ -1,0 +1,32 @@
+tags:
+  - Water
+summary: Removing a card
+operationId: deleteCard
+description: Remove an existing water card. This endpoint allows the authenticated user to delete a specific water card by providing the card's unique identifier. The user must provide a valid access token in the `Authorization` header.
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: cardId
+    required: true
+    schema:
+      type: string
+      example: '65ca67e7ae7f10c88b598384'
+    description: The unique identifier of the water card to be deleted.
+responses:
+  '204':
+    description: Successfully removed the water card.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: integer
+              example: 204
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '500':
+    $ref: ../../../components/responses/500.yaml

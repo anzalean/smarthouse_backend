@@ -1,0 +1,65 @@
+tags:
+  - Water
+summary: Editing a water card
+operationId: editCard
+description: Edit an existing water card. This endpoint allows the authenticated user to update the details of a specific water card by providing the card's unique identifier and new data. The user must provide a valid access token in the `Authorization` header.
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: cardId
+    required: true
+    schema:
+      type: string
+      example: '65ca67e7ae7f10c88b598384'
+    description: The unique identifier of the water card to be edited.
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - date
+          - amount
+        properties:
+          date:
+            description: The date and time when the water card is edited. Must be in ISO 8601 format.
+            type: string
+            format: date-time
+            example: '2025-01-05T17:20:38.936Z'
+          amount:
+            description: The amount of water consumed, in milliliters.
+            type: number
+            minimum: 50
+            maximum: 5000
+            example: 50
+responses:
+  '200':
+    description: Successfully edited the water card.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully patched a water card!
+            data:
+              type: object
+              $ref: ../../../components/schemas/water.yaml
+  '400':
+    $ref: ../../../components/responses/400.yaml
+  '401':
+    $ref: ../../../components/responses/401.yaml
+  '404':
+    $ref: ../../../components/responses/404.yaml
+  '500':
+    $ref: ../../../components/responses/500.yaml
